@@ -27,42 +27,37 @@ S=S-double('a');
 ## la última columna de espacios.
 D=reshape(S,6,length(S)/6)'(:,1:5);
 
-pkg load statistics;
+# pkg load statistics;
 
-## Solución 1)
+## Primera parte
 
-
-## Probabilidad de cada letra, en general
-
-## Convirtamos todo a un solo vector
-V=D(:);
-L=unique(V);
-
-[NN,XX]=hist(D,L);
-P=NN/sum(NN);
-
-figure(1,"name","p(letra)");
-
-bar(XX,P);
+bins=unique(D(:));
+[n,l]=hist(D(:),bins);
 
 letras={'a','b','c','d','e','f','g','h','i',...
         'j','k','l','m','n','o','p','q','r',...
         's','t','u','v','w','x','y','z','ñ'};
-set(gca,'xtick',XX);
+
+p = n/sum(n);
+        
+bar(bins,p);
+set(gca,'xtick',bins);
 set(gca,'xticklabel',letras);
+
+## Segunda parte
 
 figure(2,"name","p(letra|pos)");
 hold off;
 H=[];
-for p=[1:5]
-  [N1,foo]=hist(D(:,p),L);
+for pos=[1:5]
+  [N1,devnull]=hist(D(:,pos),bins);
   P=N1/sum(N1);
 
-  H(:,p)=P;
+  H(:,pos)=P;
 endfor
 
-h=bar(XX,H);
-set(gca,'xtick',XX);
+h=bar(bins,H);
+set(gca,'xtick',bins);
 set(gca,'xticklabel',letras);
 set(h(1),"facecolor","r");
 set(h(2),"facecolor","g");
