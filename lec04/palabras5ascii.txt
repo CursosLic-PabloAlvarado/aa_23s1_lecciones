@@ -6239,7 +6239,6 @@ osara
 osare
 osase
 oscar
-Oscar
 osead
 osean
 osear
@@ -8053,7 +8052,6 @@ solia
 solio
 solla
 sollo
-(solo
 solta
 solte
 solto
