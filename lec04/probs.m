@@ -27,9 +27,10 @@ S=S-double('a');
 ## la última columna de espacios.
 D=reshape(S,6,length(S)/6)'(:,1:5);
 
-# pkg load statistics;
+pkg load statistics;
 
 ## Primera parte
+## Probabilidad de cada letra
 
 bins=unique(D(:));
 [n,l]=hist(D(:),bins);
@@ -44,7 +45,9 @@ bar(bins,p);
 set(gca,'xtick',bins);
 set(gca,'xticklabel',letras);
 
+
 ## Segunda parte
+## Probabilidad condicional en la posición
 
 figure(2,"name","p(letra|pos)");
 hold off;
@@ -64,3 +67,23 @@ set(h(2),"facecolor","g");
 set(h(3),"facecolor","b");
 set(h(4),"facecolor","c");
 set(h(5),"facecolor","m");
+
+## Tercera parte: probabilidad de cada letra, dado que la anterior es
+## otra letra
+
+figure(3,"name","p(letra|ant=letra)")
+
+D2=[D(:,1:2);D(:,2:3);D(:,3:4);D(:,4:5)];
+[N,C]=hist3(D2,[length(bins),length(bins)]);
+hist3(D2,[length(bins),length(bins)])
+
+
+P=N/sum(N(:));
+
+set(gca,'xtick',bins);
+set(gca,'xticklabel',letras);
+set(gca,'ytick',bins);
+set(gca,'yticklabel',letras);
+
+xlabel("actual");
+ylabel("anterior");
