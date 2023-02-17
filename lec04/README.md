@@ -20,8 +20,8 @@ minúsculas.
 
 Debe ahora calcular:
 
-1. La probabilidad de cada letra en general
-2. La probabilidad de cada letra en función de su posición
+1. La probabilidad de cada letra en general.
+2. La probabilidad de cada letra en función de su posición.
 3. La probabilidad condicional general de cada letra, dado que la anterior es
    otra letra.
 4. La probabilidad condicional general de cada letra, dado que otra letra está
