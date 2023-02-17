@@ -26,3 +26,17 @@ Debe ahora calcular:
    otra letra.
 4. La probabilidad condicional general de cada letra, dado que otra letra está
    presente en la palabra.
+5. Calcule la probabilidad conjunta de que dos letras ocurran en la misma
+   palabra.
+6. Ejecute el script gauss.m y modifique (co)varianzas y valores
+   medios para comprender su efecto.  ¿Qué representa cada elipse,
+   probabilísticamente hablando?
+7. Ejecute el script teorema_límite_central.m para observar el efecto en la
+   función de densidad probabilística de concatenar varias variables
+   uniformemente distribuidas.
+8. Utilice el cuaderno Probabilidad.ipynb para repasar cómo hacer cálculos
+   básicos.
+9. Analice el código en el cuaderno probmaps/color-probability-maps.ipynb,
+   que implementa de forma ingenua y vectorizada el método presentado en la
+   teoría para calcular la probabilidad de que pixeles correspondan a piel
+   dado su color.
