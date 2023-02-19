@@ -1,7 +1,7 @@
 #!/usr/bin/octave-cli --persist
 
-## (C) 2020 Pablo Alvarado
-## EL5852 Introducción al Reconocimiento de Patrones
+## (C) 2023 Pablo Alvarado
+## EL5857 Aprendizaje Automático
 ## Escuela de Ingeniería Electrónica
 ## Tecnológico de Costa Rica
 
@@ -51,9 +51,9 @@ nareas=nx.transform([ones(length(areas),1) areas']); ## Normalized desired areas
 ## as much rows as theta.
 function res=J(theta,X,Y)
   ## First compute the residuals for all sets of theta
-  R=(X*theta'-Y*ones(1,rows(theta)));
+  R=(X*theta'-Y);
   ## Now square and sum the residuals for each set of theta
-  res=0.5*sum(R.*R,1)';
+  res=0.5*sum(R.^2,1)';
 endfunction;
 
 ## Gradient of J.
@@ -64,7 +64,7 @@ endfunction;
 ## compute also a row with the gradient: the first column is the partial
 ## derivative w.r.t theta_0 and the second w.r.t theta_1
 function res=gradJ(theta,X,Y)
-  res=(X'*(X*theta'-Y*ones(1,rows(theta))))';
+  res=(X'*(X*theta'-Y))';
 endfunction;
 
 ## The following segment shows the error surface,
@@ -109,7 +109,7 @@ daspect([1,1]);
 
 
 ## Learning rate
-alpha = 0.05;
+alpha = 0.01;
 
 ## Do the learning:
 

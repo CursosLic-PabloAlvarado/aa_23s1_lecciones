@@ -1,7 +1,7 @@
 #!/usr/bin/octave-cli --persist
 
-## (C) 2020 Pablo Alvarado
-## EL5852 Introducción al Reconocimiento de Patrones
+## (C) 2020-2023 Pablo Alvarado
+## EL5857 Aprendizaje Automático
 ## Escuela de Ingeniería Electrónica
 ## Tecnológico de Costa Rica
 
@@ -13,18 +13,34 @@
 D=load("escazu.dat");
 
 ## Rescue for now just the area and price columns
-A=[D(:,1) D(:,4)];
+areas = D(:,1);
+prices = D(:,4);
+m = rows(D); ## How many data?
 
-## Objective function of the parameters theta, requires also the data A
-## First create a matrix without the square, where the j-column has
-## theta_0 + theta_1*x_1^(j)-y^(j).  Then, square all elements of that matrix
-## and finally add up all elements in each row
-J=@(theta) 0.5*sum((theta(:,1)*ones(1,rows(A)) +
-                    theta(:,2)*A(:,1)' -
-                    ones(rows(theta),1)*A(:,2)').^2,2);
 
-th0=-200:10:400;
-th1=0.0:0.05:2;
+X = [ones(m,1) areas]; ## Design matrix
+Y = prices;
+
+## Objective function of the parameters theta, requires also the data X,Y.
+## - theta holds one configuration set in each row.
+## - we use here 'broadcasting' of Y
+J1=@(theta) 0.5*sum((Y-X*theta').^2,1);
+
+## This version separates theta0 from the rest (avoids needing 1's in X)
+J2=@(theta) 0.5*sum((Y-(X(:,2:end)*theta(:,2:end)'+theta(:,1)')).^2,1);
+
+## This version does everything 'by hand', but is limited to 'linear'
+## regression.  It uses broadcasting to avoid creating a matrix of prices
+J3=@(theta) 0.5*sum(( ( theta(:,1) + theta(:,2)*areas') -
+                       prices').^2,2);
+
+
+## Which version?
+J=J3;
+
+
+th0=-300:10:300;
+th1=0.0:0.05:3;
 
 [tt0,tt1] = meshgrid(th0,th1);
 
@@ -43,11 +59,37 @@ zlabel('J({\bf \theta})');
 ## Plot the contours in 3D
 
 figure(2,'name','Curvas de nivel');
-levels= 4.11e+4*(1.3.^[0:1:15]);
+levels= linspace(1.001*min(jj(:)),4e+6,20);
 contour3(tt0,tt1,jj,levels,"linewidth",3);
 xlabel('{\theta_0}');
 ylabel('{\theta_1}');
 zlabel('J({\bf \theta})');
 
+
 view(0,90);
 
+## Measure the time of each method:
+
+reps=500;
+printf("Time measurements averaging %i computations:\n",reps);
+
+tic;
+for i=1:reps
+  jj=reshape(J1(theta),size(tt0));
+endfor;
+t=toc;
+printf("Method J1: %d ms\n",t*1000/reps);
+
+tic;
+for i=1:reps
+  jj=reshape(J2(theta),size(tt0));
+endfor;
+t=toc;
+printf("Method J2: %d ms\n",t*1000/reps);
+
+tic;
+for i=1:reps
+  jj=reshape(J3(theta),size(tt0));
+endfor;
+t=toc;
+printf("Method J3: %d ms\n",t*1000/reps);

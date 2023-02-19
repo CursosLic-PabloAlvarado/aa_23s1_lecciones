@@ -100,13 +100,13 @@ xlabel('{\theta_0}');
 ylabel('{\theta_1}');
 
 ## Learning rate
-alpha = 0.075;
+alpha = 0.015;
 
 ## Do the learning:
 
 while(1)
   hold on;
- 
+
   printf("Click on countours to set a starting point\n");
   fflush(stdout);
 
@@ -118,7 +118,7 @@ while(1)
   t=[t0,t1];
   gt=gradJ(t,X,Y);
 
-  ## Clean the previous plot 
+  ## Clean the previous plot
   hold off;
 
   ## Paint first the contour lines
@@ -145,18 +145,18 @@ while(1)
   hold off;
   plot(Xo(:,2),Yo,"*b"); ## Input data as blue *
   hold on;
-  
+
   ## Paint the original clicked one with black
   nprices = nareas * t'; ## Transform to normalized prices
   prices=ny.itransform(nprices);  ## Denormalize the prices
-  
+
   plot(areas,prices,'k',"linewidth",3);
-  
+
   ## Perform the gradient descent
   ts=t; # sequence of t's
 
   for i=[1:100] # max 100 iterations
-    tc = ts(end,:); # Current position 
+    tc = ts(end,:); # Current position
     gn = gradJ(tc,X,Y);  # Gradient at current position
     tn = tc - alpha * gn;# Next position
     ts = [ts;tn];
@@ -180,10 +180,10 @@ while(1)
     prices=ny.itransform(nprices);
 
     plot(areas,prices,'r',"linewidth",1);
-    axis([minArea maxArea minPrice maxPrice]);  
+    axis([minArea maxArea minPrice maxPrice]);
 
     if (norm(gn)<0.001) break; endif;
-    
+
     figure(1);
     axis(featSpace,"manual","tight");
 
@@ -193,7 +193,7 @@ while(1)
   figure(2);
   ## Repaint the last one as green
   plot(areas,prices,'g',"linewidth",3);
-  axis([minArea maxArea minPrice maxPrice]);  
-  
-  
+  axis([minArea maxArea minPrice maxPrice]);
+
+
 endwhile;
